@@ -1,9 +1,11 @@
 #!/bin/sh
 
+set -xe
+
 # 初始化变量
-yaml_path="${1:-$PLUGIN_YAML_PATH}"
+input="${1:-$PLUGIN_INPUT}"
 title="$PLUGIN_TITLE"
-output_path="$PLUGIN_OUTPUT_PATH"
+output="$PLUGIN_OUTPUT"
 template="$PLUGIN_TEMPLATE"
 
 shift
@@ -16,7 +18,7 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         -o|--output)
-            output_path="$2"
+            output="$2"
             shift 2
             ;;
         --template)
@@ -25,16 +27,16 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             echo "Error: Invalid parameter: $1" >&2
-            echo "Usage: $0 yaml_path [--title title] [--output output_file]" >&2
+            echo "Usage: $0 api.yaml [--title title] [--output output_file]" >&2
             exit 1
             ;;
     esac
 done
 
 # 检查所有必需的参数是否已提供
-if [ -z "$yaml_path" ] ; then
+if [ -z "$input" ] ; then
     echo "Error: Missing required parameter" >&2
-    echo "Usage: $0 yaml_path [-t title] [-o output_path]" >&2
+    echo "Usage: $0 input.yaml [-t title] [-o output]" >&2
     echo "Options:" >&2
     echo "  -t, --title TITLE     The title for the output(Default: OpenAPI)." >&2
     echo "  -o, --output FILE     The output file for the HTML(Default: api.html), eg: -o output.html." >&2
@@ -46,24 +48,27 @@ if [ -z "$template" ] ; then
 fi
 
 # 文件存在检测
-if [ ! -f "$yaml_path" ]; then
-    echo "Error: File not found: $yaml_path" >&2
+if [ ! -f "$input" ]; then
+    echo "Error: File not found: $input" >&2
     exit 1
 fi
 
-echo "Load Yaml contents from path: $yaml_path"
+echo "Load Yaml contents from path: $input"
 
 # 渲染
 # 使用 yq 讲 yaml 转换为 json
-yq -o=json $yaml_path >> output.json
+yq -o=json $input >> /tmp/output.json
 
 # shell 将得到的 json 替换 templates/$template.html 种的 {{definition}}
 
 # 对变量进行转义
 escaped_title=$(printf '%s\n' "$title" | sed 's:[\/&]:\\&:g;$!s/$/\\/')
-escaped_definition=$(tr -d '\n' < output.json | sed 's:[\/&]:\\&:g;$!s/$/\\/')
+escaped_definition=$(tr -d '\n' < /tmp/output.json | sed 's:[\/&]:\\&:g;$!s/$/\\/')
 
-sed -E "s/\{\{TITLE\}\}/$escaped_title/g;s/\{\{DEFINITION\}\}/$escaped_definition/g" ./templates/$template.html > $output_path
+# 命令太长了，写入文件
+echo "s/\{\{TITLE\}\}/$escaped_title/g;s/\{\{DEFINITION\}\}/$escaped_definition/g" > /tmp/replace.sed
 
-echo "Success: $output_path"
+sed -E -f /tmp/replace.sed /data/plugin-stubs/templates/$template.html > $output
+
+echo "Success: $output"
 
