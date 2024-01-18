@@ -8,7 +8,9 @@ title="$PLUGIN_TITLE"
 output="$PLUGIN_OUTPUT"
 template="$PLUGIN_TEMPLATE"
 
-shift
+if [ $# -gt 0 ] ; then
+    shift
+fi
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
