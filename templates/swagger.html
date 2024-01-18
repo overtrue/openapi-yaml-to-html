@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{TITLE}}</title>
+    <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js" charset="UTF-8"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@3/swagger-ui.css" />
+    <style>
+         html
+       {
+         box-sizing: border-box;
+         overflow: -moz-scrollbars-vertical;
+         overflow-y: scroll;
+       }
+
+       *,
+       *:before,
+       *:after
+       {
+         box-sizing: inherit;
+       }
+
+       body
+       {
+         margin:0;
+         background: #fafafa;
+       }
+    </style>
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script>
+       window.onload = function() {
+          window.ui = SwaggerUIBundle({
+              dom_id: "#swagger-ui",
+              deepLinking: true,
+              presets: [
+                  SwaggerUIBundle.presets.apis,
+              ],
+              validatorUrl: "https://validator.swagger.io/validator",
+              plugins: [
+                  SwaggerUIBundle.plugins.DownloadUrl
+              ],
+              spec: {{DEFINITION}}
+          });
+      };
+    </script>
+  </body>
+</html>
