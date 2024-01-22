@@ -8,7 +8,7 @@ openapi to yaml 是一个 oci 插件，用于将 openapi yaml 文件转换为 ht
 
 ```yaml
   - name: 渲染 API 文档
-    image: overtrue/openapi-yaml-to-html:1.0.4
+    image: overtrue/openapi-yaml-to-html:1.0.5
     settings:
       input: ./docs/api.yaml        # openapi yaml 文件路径
       output: ./public/docs.html    # 可选，html 文件输出路径，默认为 ./api.html
