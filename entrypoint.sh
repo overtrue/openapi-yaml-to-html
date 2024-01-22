@@ -61,7 +61,7 @@ echo "Load Yaml contents from path: $input"
 # 使用 yq 讲 yaml 转换为 json
 yq -o=json $input >> /tmp/output.json
 
-# shell 将得到的 json 替换 templates/$template.html 种的 {{definition}}
+# shell 将得到的 json 替换 templates/$template.html 中的 {{definition}}
 
 # 对变量进行转义
 escaped_title=$(printf '%s\n' "$title" | sed 's:[\/&]:\\&:g;$!s/$/\\/')
