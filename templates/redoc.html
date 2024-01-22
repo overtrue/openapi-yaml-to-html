@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{TITLE}}</title>
+  </head>
+
+  <body>
+    <h1>{{TITLE}}</h1>
+    <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+    <div id="redoc-container"></div>
+
+    <script>
+      Redoc.init({{DEFINITION}}, {
+        "expandResponses": "200,400"
+      }, document.getElementById('redoc-container'))
+    </script>
+  </body>
+</html>
