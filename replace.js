@@ -17,7 +17,7 @@ program
 
 console.log('options:', program.opts())
 
-const input = program.args[0] || ''
+const input = program.arguments[0]
 const { title, output, template } = program.opts()
 
 // 文件存在检测
