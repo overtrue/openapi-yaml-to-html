@@ -9,4 +9,4 @@ ADD . /data/plugin-stubs
 
 RUN cd /data/plugin-stubs && npm install
 
-CMD /usr/local/bin/node replace.js -t $PLUGIN_TITLE -o $PLUGIN_OUTPUT --template $PLUGIN_TEMPLATE $PLUGIN_INPUT
+CMD /usr/local/bin/node /data/plugin-stubs/replace.js -t $PLUGIN_TITLE -o $PLUGIN_OUTPUT --template $PLUGIN_TEMPLATE $PLUGIN_INPUT
